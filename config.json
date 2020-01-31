@@ -1,0 +1,44 @@
+{
+    "logging": {
+        "reportsFile": "logs/reports.json",
+        "logFile": "logs/main.log"
+    },
+    "webService": {
+        "mode": "development",
+        "port": 5400,
+        "ssl": {
+            "enabled": false,
+            "key": "ssl/private-key.pem",
+            "certificate": "ssl/certificate.pem"
+        }
+    },
+    "honeypots": {
+        "sshConfig": {
+            "hostKeys": [
+                "C:\\Users\\Arbeit\\Desktop\\BAC - 1 Praktisch\\honeypots\\ssh\\hostKey"
+            ],
+            "bind": "0.0.0.0",
+            "port": 22
+        },
+        "mysqlConfig": {
+            "bind": "0.0.0.0",
+            "port": 3306
+        },
+        "telnetConfig": {
+            "bind": "0.0.0.0",
+            "port": 23
+        },
+        "smtpConfig": {
+            "bind": "0.0.0.0",
+            "port": 25
+        },
+        "ftpConfig": {
+            "bind": "0.0.0.0",
+            "port": 21
+        },
+        "httpConfig": {
+            "bind": "0.0.0.0",
+            "port": 80
+        }
+    }
+}
