@@ -70,6 +70,10 @@ class TelnetHoneypot extends Honepot {
         })        
     }
 
+    isRunning() {
+        return this.server.server.listening;
+    }
+
 }
 
 module.exports = {

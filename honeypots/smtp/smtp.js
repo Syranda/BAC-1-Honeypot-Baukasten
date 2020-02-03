@@ -67,6 +67,10 @@ class SMTPHoneypot extends Honeypot {
         })
     }
 
+    isRunning() {
+        return this.server.server.listening;
+    }
+
 }
 
 module.exports = {

@@ -6,10 +6,19 @@ class SSHHoneypot extends Honeypot {
     constructor() {
         super('SSH');
         
-        const { bind, port, hostKeys } = this.config;
+        const { hostKeys } = this.config;
+
+        this.checkConfig(['hostKeys'])
+
+        const checkedKeys = hostKeys.map(key => {
+            if (fs.existsSync(key + '') === false) {
+                throw new Error(`SSH Honeypot Error: host key ${key} does not exist`)
+            }
+            return fs.readFileSync(key + '');
+        })
 
         this.server = new ssh.Server({
-            hostKeys: hostKeys.map(key => fs.readFileSync(key + '')),
+            hostKeys: checkedKeys,
         }, (client, info) => {
             const { ip, port } = info;
             const { identRaw } = info.header;
@@ -92,6 +101,10 @@ class SSHHoneypot extends Honeypot {
         this.server.close(() => {
             this.log(`Stopped SSH Honeypot`);
         })
+    }
+
+    isRunning() {
+        return this.server._srv.listening;
     }
 
 }

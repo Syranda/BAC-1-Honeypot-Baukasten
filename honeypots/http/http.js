@@ -80,6 +80,10 @@ class HTTPHoneypot extends Honeypot {
         });
     }
 
+    isRunning() {
+        return this.server.listening;
+    }
+
 }
 module.exports = {
     HTTPHoneypot

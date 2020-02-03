@@ -5,17 +5,12 @@
     },
     "webService": {
         "mode": "development",
-        "port": 5400,
-        "ssl": {
-            "enabled": false,
-            "key": "ssl/private-key.pem",
-            "certificate": "ssl/certificate.pem"
-        }
+        "port": 5400
     },
     "honeypots": {
         "sshConfig": {
             "hostKeys": [
-                "C:\\Users\\Arbeit\\Desktop\\BAC - 1 Praktisch\\honeypots\\ssh\\hostKey"
+                "/Users/Boris/Desktop/host_key"
             ],
             "bind": "0.0.0.0",
             "port": 22
@@ -40,5 +35,12 @@
             "bind": "0.0.0.0",
             "port": 80
         }
+    },
+    "reportHandler": {
+        "enabled": false,
+        "url": "http://localhost:5422/reportEndpoint",
+        "reportTypes": [
+            "Authentication"
+        ]
     }
 }

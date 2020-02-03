@@ -5,7 +5,7 @@ const MODE = process.env.NODE_END_MODE || config.webService.mode;
 const PORT = process.env.NODE_ENV_HP_PORT || config.webService.port;
 const app = express();
 
-const { log } = require('./logger');
+const { log , reports} = require('./logger');
 const { SSHHoneypot } = require('./honeypots/ssh/ssh');
 const { TelnetHoneypot } = require('./honeypots/telnet/telnet');
 const { SMTPHoneypot } = require('./honeypots/smtp/smtp');
@@ -35,3 +35,18 @@ app.listen(PORT, () => {
 
 });
 
+
+app.get('/honeypot/services', (req, res) => {
+   
+    res.json(Object.keys(honeypots).map(hp => {
+        return {
+            service: hp,
+            online: honeypots[hp].isRunning()
+        }
+    }));
+
+});
+
+app.get('/honeypot/reports', (req, res) => {
+    res.json(reports);
+});

@@ -5,6 +5,7 @@ class Honeypot {
     constructor(service, configName) {
         this.service = service;
         this.config = require('../config.json').honeypots[configName ? configName : service.toLowerCase() + "Config"];
+        this.checkConfig();
     }
 
     log(message) {
@@ -34,6 +35,16 @@ class Honeypot {
     stop() {
         throw new Error('Must be implemented by subclass');
     }
+
+    isRunning() {
+        throw new Error('Must be implemented by subclass');
+    }
+
+    checkConfig(additional) {
+        if (!this.config['bind'] || !this.config['port'] || (additional && additional.some(add => !this.config[add]))) {
+            throw new Error(`Service ${this.service} is misconfigured.`);
+        }
+    } 
 
 };
 

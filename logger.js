@@ -1,5 +1,8 @@
 const fs = require('fs');
 const { reportsFile, logFile } = require('./config.json').logging;
+const { enabled, url } = require('./config.json').reportHandler;
+const geoip = require('geoip-country');
+const countries = require("i18n-iso-countries");
 
 if (fs.existsSync('./logs/') === false) {
     fs.mkdirSync('./logs');
@@ -23,6 +26,14 @@ function report(service, type, data) {
         reports[service] = [];
     }
 
+    if (data.from.ip) {
+        const originCode = geoip.lookup(data.from.ip);
+        if (!originCode) {
+            return;
+        }
+        data.origin = countries.getName(originCode.country, 'en');
+    }
+
     const now = new Date();
 
     reports[service].push({
@@ -33,9 +44,15 @@ function report(service, type, data) {
     });
 
     fs.writeFileSync(reportsFile + '', JSON.stringify(reports, null, 2), { flag: 'w' });
+
+    if (enabled === true) {
+        fetch('');
+    } 
+
 }
 
 module.exports = {
     log,
-    report
+    report,
+    reports
 };

@@ -64,6 +64,10 @@ class FTPHoneypot extends Honeypot {
         this.log(`Stopped FTP Honeypot`);
     }
 
+    isRunning() {
+        return this.server.server.listening;
+    }
+
 }
 
 module.exports = {
