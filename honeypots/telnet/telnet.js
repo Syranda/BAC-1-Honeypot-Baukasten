@@ -4,6 +4,8 @@ const Honepot = require('../Honeypot');
 class TelnetHoneypot extends Honepot {
     constructor() {
         super('Telnet');
+
+        this.startIfEnabled();
     }
 
     createTelnetServer() {
@@ -30,6 +32,8 @@ class TelnetHoneypot extends Honepot {
                     }
                 });
             });
+
+            client.on('error', () => {});
 
             let username = (await client.ask('login: ')).replace(/\r/g, '');        
             this.log(`${remoteAddress}:${remotePort} tries authentication`)
@@ -61,17 +65,19 @@ class TelnetHoneypot extends Honepot {
     }
 
     start() {
+        this.config.enabled = true;
         this.server = this.createTelnetServer();
     }
 
     stop() {
+        this.config.enabled = false;
         this.server.server.close(() => {
             this.log('Stopped Telnet Honepot');
         })        
     }
 
     isRunning() {
-        return this.server.server.listening;
+        return this.server !== undefined && this.server.server.listening;
     }
 
 }

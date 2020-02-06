@@ -85,19 +85,27 @@ class SSHHoneypot extends Honeypot {
                 });
             
             });
+
+            client.on('error', () => {});
         
         });
+
+        this.server.on('error', () => {});
+
+        this.startIfEnabled();
 
     }
 
     start() {
         const { port, bind } = this.config;
+        this.config.enabled = true;
         this.server.listen(port, bind, () => {
             this.log(`SSH Honeypot is listening on ${bind}:${port}`);
-        });    
+        });
     }
 
     stop() {
+        this.config.enabled = false;
         this.server.close(() => {
             this.log(`Stopped SSH Honeypot`);
         })

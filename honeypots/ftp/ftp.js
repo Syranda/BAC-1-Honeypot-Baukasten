@@ -50,9 +50,12 @@ class FTPHoneypot extends Honeypot {
             });
         });
 
+        this.startIfEnabled();
+
     }
 
     start() {
+        this.config.enabled = true;
         const { bind, port } = this.config;
         this.server.listen().then(() => {
             this.log(`FTP Honeypot is listening on ${bind}:${port}`);
@@ -60,6 +63,7 @@ class FTPHoneypot extends Honeypot {
     }
 
     stop() {
+        this.config.enabled = false;
         this.server.close();
         this.log(`Stopped FTP Honeypot`);
     }

@@ -31,7 +31,7 @@ function report(service, type, data) {
         if (!originCode) {
             return;
         }
-        data.origin = countries.getName(originCode.country, 'en');
+        data.from.origin = countries.getName(originCode.country, 'en');
     }
 
     const now = new Date();

@@ -52,9 +52,12 @@ class SMTPHoneypot extends Honeypot {
             }
         });
 
+        this.startIfEnabled();
+
     }
 
     start() {
+        this.config.enabled = true;
         const { port, bind } = this.config;
         this.server.listen(port, bind, () => {
             this.log(`SMTP Honeypot is listening on ${bind}:${port}`);
@@ -62,6 +65,7 @@ class SMTPHoneypot extends Honeypot {
     }
 
     stop() {
+        this.config.enabled = false;
         this.server.close(() => {
             this.log('Stopped SMTP Honeypot');
         })

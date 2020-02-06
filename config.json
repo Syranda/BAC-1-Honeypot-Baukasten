@@ -1,46 +1,56 @@
 {
-    "logging": {
-        "reportsFile": "logs/reports.json",
-        "logFile": "logs/main.log"
+  "logging": {
+    "reportsFile": "logs/reports.json",
+    "logFile": "logs/main.log"
+  },
+  "webService": {
+    "port": 5400,
+    "ssl": {
+      "enabled": true,
+      "cert": "./ssl/cert.pem",
+      "key": "./ssl/key.pem"
     },
-    "webService": {
-        "mode": "development",
-        "port": 5400
-    },
-    "honeypots": {
-        "sshConfig": {
-            "hostKeys": [
-                "/Users/Boris/Desktop/host_key"
-            ],
-            "bind": "0.0.0.0",
-            "port": 22
-        },
-        "mysqlConfig": {
-            "bind": "0.0.0.0",
-            "port": 3306
-        },
-        "telnetConfig": {
-            "bind": "0.0.0.0",
-            "port": 23
-        },
-        "smtpConfig": {
-            "bind": "0.0.0.0",
-            "port": 25
-        },
-        "ftpConfig": {
-            "bind": "0.0.0.0",
-            "port": 21
-        },
-        "httpConfig": {
-            "bind": "0.0.0.0",
-            "port": 80
-        }
-    },
-    "reportHandler": {
-        "enabled": false,
-        "url": "http://localhost:5422/reportEndpoint",
-        "reportTypes": [
-            "Authentication"
-        ]
+    "auth": {
+      "username": "Test",
+      "enabled": true,
+      "password": "Test"
     }
+  },
+  "honeypots": {
+    "sshConfig": {
+      "enabled": true,
+      "hostKeys": [
+        "./honeypots/ssh/host_key"
+      ],
+      "bind": "0.0.0.0",
+      "port": "22"
+    },
+    "telnetConfig": {
+      "enabled": true,
+      "bind": "0.0.0.0",
+      "port": 23
+    },
+    "smtpConfig": {
+      "enabled": false,
+      "bind": "0.0.0.0",
+      "port": 25
+    },
+    "ftpConfig": {
+      "enabled": false,
+      "bind": "0.0.0.0",
+      "port": 21
+    },
+    "httpConfig": {
+      "enabled": false,
+      "bind": "0.0.0.0",
+      "port": 80
+    }
+  },
+  "reportHandler": {
+    "enabled": false,
+    "url": "",
+    "reportTypes": [
+      "Authentication"
+    ]
+  }
 }

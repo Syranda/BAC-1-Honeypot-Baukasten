@@ -28,6 +28,14 @@ class Honeypot {
         this.report('Authentication', data);;
     }
 
+    startIfEnabled() {
+        const { enabled } = this.config;
+
+        if (enabled === true) {
+            this.start();
+        }
+    }
+
     start() {
         throw new Error('Must be implemented by subclass');
     }
@@ -41,7 +49,7 @@ class Honeypot {
     }
 
     checkConfig(additional) {
-        if (!this.config['bind'] || !this.config['port'] || (additional && additional.some(add => !this.config[add]))) {
+        if (!this.config['bind'] || !this.config['port'] || this.config['enabled'] === undefined || (additional && additional.some(add => !this.config[add]))) {
             throw new Error(`Service ${this.service} is misconfigured.`);
         }
     } 

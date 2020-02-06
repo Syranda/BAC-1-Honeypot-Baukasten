@@ -65,9 +65,12 @@ class HTTPHoneypot extends Honeypot {
             });
         });
 
+        this.startIfEnabled();
+
     }
 
     start() {
+        this.config.enabled = true;
         const { port, bind } = this.config;
         this.server.listen(port, bind, () => {
             this.log(`HTTP Honeypot is listening on ${bind}:${port}`);
@@ -75,6 +78,7 @@ class HTTPHoneypot extends Honeypot {
     }
 
     stop() {
+        this.config.enabled = false;
         this.server.close(() => {
             this.log(`Stopped HTTP Honeypot`);
         });
