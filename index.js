@@ -87,7 +87,6 @@ app.get('/honeypot/config', (req, res) => {
 
 app.post('/honeypot/config', (req, res) => {
     const { service, bind, port } = req.body;
-    const config = require('./config.json').honeypots;
     const hp = honeypots[service];
     hp.config.bind = bind;
     hp.config.port = port;
@@ -102,7 +101,8 @@ app.post('/honeypot/config', (req, res) => {
     res.sendStatus(200);
 });
 
-app.get('/honeypot/reports', (req, res) => {
+app.get('/honeypot/report', (req, res) => {
+    console.log(JSON.stringify(reports, null, 2))
     res.json(reports);
 });
 

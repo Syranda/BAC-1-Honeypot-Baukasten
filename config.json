@@ -4,21 +4,22 @@
     "logFile": "logs/main.log"
   },
   "webService": {
-    "port": 5400,
+    "port": "5400",
     "ssl": {
-      "enabled": true,
-      "cert": "./ssl/cert.pem",
-      "key": "./ssl/key.pem"
+      "enabled": false,
+      "cert": "",
+      "key": "",
+      "passphrase": ""
     },
     "auth": {
-      "username": "Test",
-      "enabled": true,
-      "password": "Test"
+      "username": "",
+      "enabled": false,
+      "password": ""
     }
   },
   "honeypots": {
     "sshConfig": {
-      "enabled": true,
+      "enabled": false,
       "hostKeys": [
         "./honeypots/ssh/host_key"
       ],
@@ -26,7 +27,7 @@
       "port": "22"
     },
     "telnetConfig": {
-      "enabled": true,
+      "enabled": false,
       "bind": "0.0.0.0",
       "port": 23
     },
@@ -45,12 +46,5 @@
       "bind": "0.0.0.0",
       "port": 80
     }
-  },
-  "reportHandler": {
-    "enabled": false,
-    "url": "",
-    "reportTypes": [
-      "Authentication"
-    ]
   }
 }
