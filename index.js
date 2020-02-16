@@ -3,7 +3,7 @@ const https = require('https');
 const fs = require('fs');
 
 const config = require('./config.json');
-const { port, auth, ssl } = config.webService;
+const { bind, port, auth, ssl } = config.webService;
 const app = express();
 const bodyParser = require('body-parser');
 
@@ -102,7 +102,6 @@ app.post('/honeypot/config', (req, res) => {
 });
 
 app.get('/honeypot/report', (req, res) => {
-    console.log(JSON.stringify(reports, null, 2))
     res.json(reports);
 });
 
@@ -133,11 +132,25 @@ app.post('/honeypot/start', (req, res) => {
 
 });
 
+app.get('/honeypot/reportHookConfig', (req, res) => {
+    const config = require('./config.json');
+    res.json(config.reportHook);
+});
+
+app.post('/honeypot/reportHookConfig', (req, res) => {
+    const config = require('./config.json');
+    const { enableReportHook, url } = req.body;
+    console.log(enableReportHook);
+    config.reportHook.enabled = enableReportHook ? true : false;
+    config.reportHook.url = url;
+    fs.writeFileSync('./config.json', JSON.stringify(config, null, 2));
+    res.sendStatus(200);
+});
+
 initHoneypots();
 
 let server;
-
-if (fs.existsSync(ssl.key) && fs.existsSync(ssl.cert)) {
+if (ssl.enabled === true && fs.existsSync(ssl.key) && fs.existsSync(ssl.cert)) {
     log('Main Service', 'Enabling SSL...');
     server = https.createServer({
         key: fs.readFileSync(ssl.key),
@@ -148,8 +161,8 @@ if (fs.existsSync(ssl.key) && fs.existsSync(ssl.cert)) {
     server = app;
 }
 
-server.listen(port, () => {
-    log('Main Service', `Service Started on port ${port}`);
+server.listen(port, bind, () => {
+    log('Main Service', `Service listening on ${bind}:${port}`);
 });
 
 

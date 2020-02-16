@@ -1,8 +1,8 @@
 const fs = require('fs');
 const { reportsFile, logFile } = require('./config.json').logging;
-const { enabled, url } = require('./config.json').reportHandler;
 const geoip = require('geoip-country');
 const countries = require("i18n-iso-countries");
+const fetch = require('node-fetch');
 
 if (fs.existsSync('./logs/') === false) {
     fs.mkdirSync('./logs');
@@ -28,25 +28,36 @@ function report(service, type, data) {
 
     if (data.from.ip) {
         const originCode = geoip.lookup(data.from.ip);
-        if (!originCode) {
-            return;
+        if (originCode) {
+            data.from.origin = countries.getName(originCode.country, 'en');
         }
-        data.from.origin = countries.getName(originCode.country, 'en');
     }
 
     const now = new Date();
 
-    reports[service].push({
+    const report = {
         time: `${now.toLocaleDateString()} ${now.toLocaleTimeString()}`,
         timeISO: now.toISOString(),
         type,
         data
-    });
+    };
+    reports[service].push(report);
 
     fs.writeFileSync(reportsFile + '', JSON.stringify(reports, null, 2), { flag: 'w' });
 
-    if (enabled === true) {
-        fetch('');
+    const { enabled, url } = require('./config.json').reportHook;
+    if (enabled == true) {
+        const remoteReport = Object.assign({}, report);
+        remoteReport.service = service;
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(remoteReport)
+        })
+        .then(res => {})
+        .catch(e => console.error(e));
     } 
 
 }

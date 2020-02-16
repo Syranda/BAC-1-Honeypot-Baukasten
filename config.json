@@ -4,7 +4,7 @@
     "logFile": "logs/main.log"
   },
   "webService": {
-    "port": "5400",
+    "port": 5400,
     "ssl": {
       "enabled": false,
       "cert": "",
@@ -12,14 +12,15 @@
       "passphrase": ""
     },
     "auth": {
-      "username": "",
-      "enabled": false,
-      "password": ""
-    }
+      "username": "test",
+      "enabled": true,
+      "password": "test"
+    },
+    "bind": "0.0.0.0"
   },
   "honeypots": {
     "sshConfig": {
-      "enabled": false,
+      "enabled": true,
       "hostKeys": [
         "./honeypots/ssh/host_key"
       ],
@@ -27,7 +28,7 @@
       "port": "22"
     },
     "telnetConfig": {
-      "enabled": false,
+      "enabled": true,
       "bind": "0.0.0.0",
       "port": 23
     },
@@ -46,5 +47,9 @@
       "bind": "0.0.0.0",
       "port": 80
     }
+  },
+  "reportHook": {
+    "url": "http://localhost:3000/",
+    "enabled": true
   }
 }

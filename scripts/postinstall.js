@@ -1,5 +1,6 @@
 const readLine = require('readline');
 const fs = require('fs');
+const validator = require('validator');
 
 const rl = readLine.createInterface({
     input: process.stdin,
@@ -37,10 +38,10 @@ function askNumber(message, defaultNumber) {
     });
 }
 
-function askString(message) {
+function askString(message, defaultString) {
     return new Promise((resolve, reject) => {
-        rl.question(message, answer => {
-            resolve(answer);
+        rl.question(message + (defaultString ? ` [${defaultString}]: ` : ': '), answer => {
+            resolve(answer.length > 0 ? answer : defaultString);
         });
     });
 }
@@ -55,7 +56,26 @@ function askString(message) {
 
     do {
 
-        const port = await askNumber('On which port should the web service listen on?', 5400);
+        let bind;
+        let isIP = false;
+        do {
+            bind = await askString('On which address should the web service listen on?', '0.0.0.0');
+            isIP = validator.isIP(bind);
+            if (!isIP) {
+                console.log('Please enter a valid IP address');
+            }
+        } while (!isIP);
+        config.webService.bind = bind;
+
+        let port;
+        let isPort = false;
+        do {
+            port = await askNumber('On which port should the web service listen on?', 5400);
+            isPort = validator.isPort(port + '');
+            if (!isPort) {
+                console.log('Please enter a valid port');
+            }
+        } while (!isPort);
         config.webService.port = port;
 
         const useSSL = await askYesNo('Do you want to use SSL?', true);
